@@ -153,7 +153,7 @@ global TrackcurPos
 global TrackLength
 global TrackStepLim
 
-## Wrist Congig
+## Wrist Config
 global WC
 
 
