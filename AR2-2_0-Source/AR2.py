@@ -1,5 +1,5 @@
 ############################################################################
-## Version AR2.2.0 #########################################################
+## Version AR2.2.1 #########################################################
 ############################################################################
 """ AR2 - Stepper motor robot control software
     Copyright (c) 2017, Chris Annin
@@ -60,6 +60,9 @@ CHANGES KINEMATICS FOR WRIST ORIENTATION J4-J6
 SPEED UP CALIBRATION MOVE
 **VERSION 2.2.0
 UPDATED TO PYTHON 3.7
+**VERSION 2.2.1
+UPDATED PROGRAMMING STYLE TO MORE OBJECT-ORIENTED
+ADDED CROSS-PLATFORM (WINDOWS/RPI) COMMON FUNCTIONALITY
 '''
 ##########################################################################
 ##########################################################################
@@ -85,13 +88,66 @@ root.resizable(width=True, height=True)
 root.geometry('1360x720+0+0')
 root.runTrue = 0
 
+################################################################################
+### DEVICE/PLATFORM CLASS ######################################################
+################################################################################
+
+# Determine device platform: RaspberryPi (linux) or Windows
+class Device:
+    def __init__(self):
+        determinePlatform(self)
+
+    def determinePlatform():
+        if platform == "linux" or platform == "linux2":
+            self.devicePlatform = "RaspberryPi"
+        elif platform == "win32":
+            self.devicePlatform = "Windows"
+
+
+# Instantiate Device class as "device".  This will be used to set the COM port
+# as well as the GUI layout
+device = Device()
+
+
+################################################################################
+### COMMUNICATION CLASS ########################################################
+################################################################################
+
+class Communication:
+    def __init__(self):
+        self.baud = 115200
+
+    def setCom(self):
+
+
+        if platform == "linux" or platform == "linux2":
+            self.comName = "/dev/ttyACM"
+        elif platform == "win32":
+            self.comName = "COM"
+
+        self.port = comName + comPortEntryField.get()
+
+    def setSerial(self):
+        self.ser = serial.Serial(self.port, self.baud, timeout = 1)
+
+
+# Instantiate Communication class as "com" so com.ser can be used globally to
+# reference the open serial communication port
+com = Communication()
+
+
+################################################################################
+### NEEDS TO BE ADDRESSED ######################################################
+################################################################################
+
 global JogStepsStat
 JogStepsStat = IntVar()
 global xboxUse
 
-############################################################################
-### DEFINE TABS ############################################################
-############################################################################
+
+################################################################################
+### NOTEBOOK AND TAB DEFINITION ################################################
+################################################################################
 
 nb = tkinter.ttk.Notebook(root, width=1360, height=700)
 nb.place(x=0, y=0)
@@ -118,31 +174,9 @@ tab7 = tkinter.ttk.Frame(nb)
 nb.add(tab7, text='   Info    ')
 
 
-
-###############################################################################################################################################################
-### COMMUNICATION DEFS ################################################################################################################# COMMUNICATION DEFS ###
-###############################################################################################################################################################
-
-class Communication:
-    def __init__(self):
-        self.baud = 115200
-
-    def setCom(self):
-        if platform == "linux" or platform == "linux2":
-            self.comName = "/dev/ttyACM"
-        elif platform == "win32":
-            self.comName = "COM"
-
-        self.port = comName + comPortEntryField.get()
-
-    def setSerial(self):
-        self.ser = serial.Serial(self.port, self.baud, timeout = 1)
-
-
-# Instantiate Communication class as "com" so com.ser can be used globally to
-# reference the open serial communication port
-com = Communication()
-
+################################################################################
+### SERIAL COM DEF #############################################################
+################################################################################
 
 def setCom():
     com.setCom()
@@ -154,8 +188,6 @@ def setCom():
         com.ser.Serial.close()
         com.ser.open()
 
-
-
 '''  Replace def with global variable with a class/object
 
 def setCom():
@@ -165,9 +197,10 @@ def setCom():
   ser = serial.Serial(port,baud)
 '''
 
-###############################################################################################################################################################
-### EXECUTION DEFS ######################################################################################################################### EXECUTION DEFS ###
-###############################################################################################################################################################
+
+################################################################################
+### EXECUTION DEFS #############################################################
+################################################################################
 
 def runProg():
   def threadProg():
