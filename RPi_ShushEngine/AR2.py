@@ -55,7 +55,7 @@ import time
 import threading
 import queue
 import math
-import tkinter.ttk
+import tkinter.ttk as ttk
 import tkinter.messagebox
 import webbrowser
 
@@ -86,60 +86,108 @@ nb.add(tab4, text='   Registers    ')
 tab5 = ttk.Frame(nb)
 nb.add(tab5, text='   Vision    ')
 
-global J1NegAngLim
-global J1PosAngLim
-global J1StepLim
-global J1DegPerStep
-global J1StepCur
-global J1AngCur
-global J2NegAngLim
-global J2PosAngLim
-global J2StepLim
-global J2DegPerStep
-global J2StepCur
-global J2AngCur
-global J2NegAngLim
-global J2PosAngLim
-global J2StepLim
-global J2DegPerStep
-global J2StepCur
-global J2AngCur
-global J3NegAngLim
-global J3PosAngLim
-global J3StepLim
-global J3DegPerStep
-global J3StepCur
-global J3AngCur
-global J4NegAngLim
-global J4PosAngLim
-global J4StepLim
-global J4DegPerStep
-global J4StepCur
-global J4AngCur
-global J5NegAngLim
-global J5PosAngLim
-global J5StepLim
-global J5DegPerStep
-global J5StepCur
-global J5AngCur
-global J6NegAngLim
-global J6PosAngLim
-global J6StepLim
-global J6DegPerStep
-global J6StepCur
-global J6AngCur
-global XcurPos
-global YcurPos
-global ZcurPos
-global RxcurPos
-global RycurPos
-global RzcurPos
-global TrackcurPos
-global TrackLength
-global TrackStepLim
+class JointParams():
+    J1NegAngLim = None
+    J1PosAngLim = None
+    J1StepLim = None
+    J1DegPerStep = None
+    J1StepCur = None
+    J1AngCur = None
+    J2NegAngLim = None
+    J2PosAngLim = None
+    J2StepLim = None
+    J2DegPerStep = None
+    J2StepCur = None
+    J2AngCur = None
+    J2NegAngLim = None
+    J2PosAngLim = None
+    J2StepLim = None
+    J2DegPerStep = None
+    J2StepCur = None
+    J2AngCur = None
+    J3NegAngLim = None
+    J3PosAngLim = None
+    J3StepLim = None
+    J3DegPerStep = None
+    J3StepCur = None
+    J3AngCur = None
+    J4NegAngLim = None
+    J4PosAngLim = None
+    J4StepLim = None
+    J4DegPerStep = None
+    J4StepCur = None
+    J4AngCur = None
+    J5NegAngLim = None
+    J5PosAngLim = None
+    J5StepLim = None
+    J5DegPerStep = None
+    J5StepCur = None
+    J5AngCur = None
+    J6NegAngLim = None
+    J6PosAngLim = None
+    J6StepLim = None
+    J6DegPerStep = None
+    J6StepCur = None
+    J6AngCur = None
+    XcurPos = None
+    YcurPos = None
+    ZcurPos = None
+    RxcurPos = None
+    RycurPos = None
+    RzcurPos = None
+    TrackcurPos = None
+    TrackLength = None
+    TrackStepLim = None
 
-## Wrist Config
-global WC
+    JogStepsStat = None
+ 
+# Instantiate JointParams so its attributes may be accessed globally
+joint = JointParams()
+
+joint.JogStepsStat = IntVar()
+
+# Create Calibration class for calibration data
+class Calibration():
+    CalDir = None
+    J1caldir = None
+    J2caldir = None
+    J3caldir = None
+    J4caldir = None
+    J5caldir = None
+    J6caldir = None
+    calStat = None
+
+# Instantiate Calibration class as cal
+cal = Calibration()
+
+# Create MotorDir class for motor direction setting
+class MotorDir():
+    MotDir = None
+    J1motdir = None
+    J2motdir = None
+    J3motdir = None
+    J4motdir = None
+    J5motdir = None
+    J6motdir = None
+    
+# Instantiate MotorDir class as motDir
+mot = MotorDir()
+
+# Create Vision class to hold vision data
+class Vision:
+    VisFileLoc = None
+    VisProg = None
+    VisOrigXpix = None
+    VisOrigXmm = None
+    VisOrigYpix = None
+    VisOrigYmm = None
+    VisEndXpix = None
+    VisEndXmm = None
+    VisEndYpix = None
+    VisEndYmm = None
+
+# Instantiate vision class as vis
+vis = Vision()
 
 
 ###Fwd Kinamatic outputs
@@ -167,40 +215,71 @@ global E8
 global E27
 global E28
 
+# Create class for DH parameters
+class DH_Params():
+    DHr1 = None
+    DHr2 = None
+    DHr3 = None
+    DHr4 = None
+    DHr5 = None
+    DHr6 = None
 
-global DHr1
-global DHr2
-global DHr3
-global DHr4
-global DHr5
-global DHr6
+    DHa1 = None
+    DHa2 = None
+    DHa3 = None
+    DHa4 = None
+    DHa5 = None
+    DHa6 = None
 
-global DHa1
-global DHa2
-global DHa3
-global DHa4
-global DHa5
-global DHa6
+    DHd1 = None
+    DHd2 = None
+    DHd3 = None
+    DHd4 = None
+    DHd5 = None
+    DHd6 = None
 
-global DHd1
-global DHd2
-global DHd3
-global DHd4
-global DHd5
-global DHd6
+    DHt1 = None
+    DHt2 = None
+    DHt3 = None
+    DHt4 = None
+    DHt5 = None
+    DHt6 = None
 
-global DHt1
-global DHt2
-global DHt3
-global DHt4
-global DHt5
-global DHt6
+# Instantiate DH parameters
+dh = DH_Params()
 
+# Create class for jog settings
+class JogJoint():
+    def __init__(self):
+        self.defaultValues()
 
-###jog step options
-global JogStepsStat
-JogStepsStat = IntVar()
+    def updateValues(self):
+        self.Track = float(TrackcurEntryField.get())
+        self.newSpeed = speedEntryField.get()
+        self.ACCdur = ACCdurField.get()
+        self.ACCspd = ACCspeedField.get()
+        self.DECdur = DECdurField.get()
+        self.DECspd = DECspeedField.get()
 
+    def defaultValues(self):
+        self.CX = joint.XcurPos
+        self.CY = joint.YcurPos
+        self.CZ = joint.ZcurPos
+        self.CRx = joint.RxcurPos
+        self.CRy = joint.RycurPos
+        self.CRz = joint.RzcurPos
+        self.TCX = 0
+        self.TCY = 0
+        self.TCZ = 0
+        self.TCRx = 0
+        self.TCRy = 0
+        self.TCRz = 0
+        self.WC = 0
+
+        self.updateValues()
+
+# Instantiate JogJoint
+jog = JogJoint()
 
 ###DEFS###################################################################
 ##########################################################################
@@ -237,7 +316,7 @@ def executeRow():
     global rowinproc
     selRow = tab1.progView.curselection()[0]
     tab1.progView.see(selRow+2)
-    data = map(int, tab1.progView.curselection())
+    data = map(tab1.progView.curselection())
     command=tab1.progView.get(data[0])
     cmdType=command[:6]
 
@@ -441,7 +520,7 @@ def executeRow():
     ##Calibrate Command##
     if (cmdType == "Calibr"):
         calRobotAll()
-        if (calStat == 0):
+        if (cal.calStat == 0):
             stopProg()
 
     ##Move J Command##
@@ -459,26 +538,27 @@ def executeRow():
         DECdurIndex = command.find("Dd")
         DECspdIndex = command.find("Ds")
         WristConfIndex = command.find("$")
-        CX = float(command[J1newIndex+3:J2newIndex-1])
-        CY = float(command[J2newIndex+3:J3newIndex-1])
-        CZ = float(command[J3newIndex+3:J4newIndex-1])
-        CRx = float(command[J4newIndex+3:J5newIndex-1])
-        CRy = float(command[J5newIndex+3:J6newIndex-1])
-        CRz = float(command[J6newIndex+3:TRnewIndex-1])
-        Track = float(command[TRnewIndex+3:SpeedIndex-1])
-        newSpeed = str(command[SpeedIndex+6:ACCdurIndex-1])
-        ACCdur = command[ACCdurIndex+3:ACCspdIndex-1]
-        ACCspd = command[ACCspdIndex+3:DECdurIndex-1]
-        DECdur = command[DECdurIndex+3:DECspdIndex-1]
-        DECspd = command[DECspdIndex+3:WristConfIndex-1]
-        WC = command[WristConfIndex+1:]
-        TCX = 0
-        TCY = 0
-        TCZ = 0
-        TCRx = 0
-        TCRy = 0
-        TCRz = 0
-        MoveXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track)
+        jog.CX = float(command[J1newIndex+3:J2newIndex-1])
+        jog.CY = float(command[J2newIndex+3:J3newIndex-1])
+        jog.CZ = float(command[J3newIndex+3:J4newIndex-1])
+        jog.CRx = float(command[J4newIndex+3:J5newIndex-1])
+        jog.CRy = float(command[J5newIndex+3:J6newIndex-1])
+        jog.CRz = float(command[J6newIndex+3:TRnewIndex-1])
+        jog.Track = float(command[TRnewIndex+3:SpeedIndex-1])
+        jog.newSpeed = str(command[SpeedIndex+6:ACCdurIndex-1])
+        jog.ACCdur = command[ACCdurIndex+3:ACCspdIndex-1]
+        jog.ACCspd = command[ACCspdIndex+3:DECdurIndex-1]
+        jog.DECdur = command[DECdurIndex+3:DECspdIndex-1]
+        jog.DECspd = command[DECspdIndex+3:WristConfIndex-1]
+        jog.WC = command[WristConfIndex+1:]
+        jog.TCX = 0
+        jog.TCY = 0
+        jog.TCZ = 0
+        jog.TCRx = 0
+        jog.TCRy = 0
+        jog.TCRz = 0
+        
+        MoveXYZ()
 
     ##Offs J Command##
     if (cmdType == "OFFS J"):
@@ -504,26 +584,27 @@ def executeRow():
         CRxa = eval("SP_"+SP+"_E4_EntryField").get()
         CRya = eval("SP_"+SP+"_E5_EntryField").get()
         CRza = eval("SP_"+SP+"_E6_EntryField").get()
-        CX = float(CXa) + float(command[J1newIndex+3:J2newIndex-1])
-        CY = float(CYa) + float(command[J2newIndex+3:J3newIndex-1])
-        CZ = float(CZa) + float(command[J3newIndex+3:J4newIndex-1])
-        CRx = float(CRxa) + float(command[J4newIndex+3:J5newIndex-1])
-        CRy = float(CRya) + float(command[J5newIndex+3:J6newIndex-1])
-        CRz = float(CRza) + float(command[J6newIndex+3:TRnewIndex-1])
-        Track = float(command[TRnewIndex+3:SpeedIndex-1])
-        newSpeed = str(command[SpeedIndex+6:ACCdurIndex-1])
-        ACCdur = command[ACCdurIndex+3:ACCspdIndex-1]
-        ACCspd = command[ACCspdIndex+3:DECdurIndex-1]
-        DECdur = command[DECdurIndex+3:DECspdIndex-1]
-        DECspd = command[DECspdIndex+3:WristConfIndex-1]
-        WC = command[WristConfIndex+1:]
-        TCX = 0
-        TCY = 0
-        TCZ = 0
-        TCRx = 0
-        TCRy = 0
-        TCRz = 0
-        MoveXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track)
+        jog.CX = float(CXa) + float(command[J1newIndex+3:J2newIndex-1])
+        jog.CY = float(CYa) + float(command[J2newIndex+3:J3newIndex-1])
+        jog.CZ = float(CZa) + float(command[J3newIndex+3:J4newIndex-1])
+        jog.CRx = float(CRxa) + float(command[J4newIndex+3:J5newIndex-1])
+        jog.CRy = float(CRya) + float(command[J5newIndex+3:J6newIndex-1])
+        jog.CRz = float(CRza) + float(command[J6newIndex+3:TRnewIndex-1])
+        jog.Track = float(command[TRnewIndex+3:SpeedIndex-1])
+        jog.newSpeed = str(command[SpeedIndex+6:ACCdurIndex-1])
+        jog.ACCdur = command[ACCdurIndex+3:ACCspdIndex-1]
+        jog.ACCspd = command[ACCspdIndex+3:DECdurIndex-1]
+        jog.DECdur = command[DECdurIndex+3:DECspdIndex-1]
+        jog.DECspd = command[DECspdIndex+3:WristConfIndex-1]
+        jog.WC = command[WristConfIndex+1:]
+        jog.TCX = 0
+        jog.TCY = 0
+        jog.TCZ = 0
+        jog.TCRx = 0
+        jog.TCRy = 0
+        jog.TCRz = 0
+
+        MoveXYZ()
 
     ##Move SP Command##
     if (cmdType == "Move S"):
@@ -537,26 +618,27 @@ def executeRow():
         DECspdIndex = command.find("Ds")
         WristConfIndex = command.find("$")
         SP = str(command[SPnewInex+4:SPendInex])
-        CX = float(eval("SP_"+SP+"_E1_EntryField").get())
-        CY = float(eval("SP_"+SP+"_E2_EntryField").get())
-        CZ = float(eval("SP_"+SP+"_E3_EntryField").get())
-        CRx = float(eval("SP_"+SP+"_E4_EntryField").get())
-        CRy = float(eval("SP_"+SP+"_E5_EntryField").get())
-        CRz = float(eval("SP_"+SP+"_E6_EntryField").get())
-        Track = float(command[TRnewIndex+3:SpeedIndex-1])
-        newSpeed = str(command[SpeedIndex+6:ACCdurIndex-1])
-        ACCdur = command[ACCdurIndex+3:ACCspdIndex-1]
-        ACCspd = command[ACCspdIndex+3:DECdurIndex-1]
-        DECdur = command[DECdurIndex+3:DECspdIndex-1]
-        DECspd = command[DECspdIndex+3:WristConfIndex-1]
-        WC = command[WristConfIndex+1:]
-        TCX = 0
-        TCY = 0
-        TCZ = 0
-        TCRx = 0
-        TCRy = 0
-        TCRz = 0
-        MoveXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track)
+        jog.CX = float(eval("SP_"+SP+"_E1_EntryField").get())
+        jog.CY = float(eval("SP_"+SP+"_E2_EntryField").get())
+        jog.CZ = float(eval("SP_"+SP+"_E3_EntryField").get())
+        jog.CRx = float(eval("SP_"+SP+"_E4_EntryField").get())
+        jog.CRy = float(eval("SP_"+SP+"_E5_EntryField").get())
+        jog.CRz = float(eval("SP_"+SP+"_E6_EntryField").get())
+        jog.Track = float(command[TRnewIndex+3:SpeedIndex-1])
+        jog.newSpeed = str(command[SpeedIndex+6:ACCdurIndex-1])
+        jog.ACCdur = command[ACCdurIndex+3:ACCspdIndex-1]
+        jog.ACCspd = command[ACCspdIndex+3:DECdurIndex-1]
+        jog.DECdur = command[DECdurIndex+3:DECspdIndex-1]
+        jog.DECspd = command[DECspdIndex+3:WristConfIndex-1]
+        jog.WC = command[WristConfIndex+1:]
+        jog.TCX = 0
+        jog.TCY = 0
+        jog.TCZ = 0
+        jog.TCRx = 0
+        jog.TCRy = 0
+        jog.TCRz = 0
+        
+        MoveXYZ()
 
     ##OFFS SP Command##
     if (cmdType == "OFFS S"):
@@ -573,26 +655,27 @@ def executeRow():
         WristConfIndex = command.find("$")
         SP = str(command[SPnewInex+4:SPendInex])
         SP2 = str(command[SP2newInex+5:SP2endInex])
-        CX = float(eval("SP_"+SP+"_E1_EntryField").get()) + float(eval("SP_"+SP2+"_E1_EntryField").get())
-        CY = float(eval("SP_"+SP+"_E2_EntryField").get()) + float(eval("SP_"+SP2+"_E2_EntryField").get())
-        CZ = float(eval("SP_"+SP+"_E3_EntryField").get()) + float(eval("SP_"+SP2+"_E3_EntryField").get())
-        CRx = float(eval("SP_"+SP+"_E4_EntryField").get()) + float(eval("SP_"+SP2+"_E4_EntryField").get())
-        CRy = float(eval("SP_"+SP+"_E5_EntryField").get()) + float(eval("SP_"+SP2+"_E5_EntryField").get())
-        CRz = float(eval("SP_"+SP+"_E6_EntryField").get()) + float(eval("SP_"+SP2+"_E6_EntryField").get())
-        Track = float(command[TRnewIndex+3:SpeedIndex-1])
-        newSpeed = str(command[SpeedIndex+6:ACCdurIndex-1])
-        ACCdur = command[ACCdurIndex+3:ACCspdIndex-1]
-        ACCspd = command[ACCspdIndex+3:DECdurIndex-1]
-        DECdur = command[DECdurIndex+3:DECspdIndex-1]
-        DECspd = command[DECspdIndex+3:WristConfIndex-1]
-        WC = command[WristConfIndex+1:]
-        TCX = 0
-        TCY = 0
-        TCZ = 0
-        TCRx = 0
-        TCRy = 0
-        TCRz = 0
-        MoveXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track)
+        jog.CX = float(eval("SP_"+SP+"_E1_EntryField").get()) + float(eval("SP_"+SP2+"_E1_EntryField").get())
+        jog.CY = float(eval("SP_"+SP+"_E2_EntryField").get()) + float(eval("SP_"+SP2+"_E2_EntryField").get())
+        jog.CZ = float(eval("SP_"+SP+"_E3_EntryField").get()) + float(eval("SP_"+SP2+"_E3_EntryField").get())
+        jog.CRx = float(eval("SP_"+SP+"_E4_EntryField").get()) + float(eval("SP_"+SP2+"_E4_EntryField").get())
+        jog.CRy = float(eval("SP_"+SP+"_E5_EntryField").get()) + float(eval("SP_"+SP2+"_E5_EntryField").get())
+        jog.CRz = float(eval("SP_"+SP+"_E6_EntryField").get()) + float(eval("SP_"+SP2+"_E6_EntryField").get())
+        jog.Track = float(command[TRnewIndex+3:SpeedIndex-1])
+        jog.newSpeed = str(command[SpeedIndex+6:ACCdurIndex-1])
+        jog.ACCdur = command[ACCdurIndex+3:ACCspdIndex-1]
+        jog.ACCspd = command[ACCspdIndex+3:DECdurIndex-1]
+        jog.DECdur = command[DECdurIndex+3:DECspdIndex-1]
+        jog.DECspd = command[DECspdIndex+3:WristConfIndex-1]
+        jog.WC = command[WristConfIndex+1:]
+        jog.TCX = 0
+        jog.TCY = 0
+        jog.TCZ = 0
+        jog.TCRx = 0
+        jog.TCRy = 0
+        jog.TCRz = 0
+        
+        MoveXYZ()
 
     rowinproc = 0
 
@@ -612,26 +695,28 @@ def gotoFineCalPos():
     DECdurIndex = command.find("Dd")
     DECspdIndex = command.find("Ds")
     WristConfIndex = command.find("$")
-    CX = float(command[J1newIndex+3:J2newIndex-1])
-    CY = float(command[J2newIndex+3:J3newIndex-1])
-    CZ = float(command[J3newIndex+3:J4newIndex-1])
-    CRx = float(command[J4newIndex+3:J5newIndex-1])
-    CRy = float(command[J5newIndex+3:J6newIndex-1])
-    CRz = float(command[J6newIndex+3:TRnewIndex-1])
-    Track = float(command[TRnewIndex+3:SpeedIndex-1])
-    newSpeed = str(command[SpeedIndex+6:ACCdurIndex-1])
-    ACCdur = command[ACCdurIndex+3:ACCspdIndex-1]
-    ACCspd = command[ACCspdIndex+3:DECdurIndex-1]
-    DECdur = command[DECdurIndex+3:DECspdIndex-1]
-    DECspd = command[DECspdIndex+3:WristConfIndex-1]
-    WC = command[WristConfIndex+1:]
-    TCX = 0
-    TCY = 0
-    TCZ = 0
-    TCRx = 0
-    TCRy = 0
-    TCRz = 0
-    MoveXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track)
+    jog.CX = float(command[J1newIndex+3:J2newIndex-1])
+    jog.CY = float(command[J2newIndex+3:J3newIndex-1])
+    jog.CZ = float(command[J3newIndex+3:J4newIndex-1])
+    jog.CRx = float(command[J4newIndex+3:J5newIndex-1])
+    jog.CRy = float(command[J5newIndex+3:J6newIndex-1])
+    jog.CRz = float(command[J6newIndex+3:TRnewIndex-1])
+    jog.Track = float(command[TRnewIndex+3:SpeedIndex-1])
+    jog.newSpeed = str(command[SpeedIndex+6:ACCdurIndex-1])
+    jog.ACCdur = command[ACCdurIndex+3:ACCspdIndex-1]
+    jog.ACCspd = command[ACCspdIndex+3:DECdurIndex-1]
+    jog.DECdur = command[DECdurIndex+3:DECspdIndex-1]
+    jog.DECspd = command[DECspdIndex+3:WristConfIndex-1]
+    jog.WC = command[WristConfIndex+1:]
+    jog.TCX = 0
+    jog.TCY = 0
+    jog.TCZ = 0
+    jog.TCRx = 0
+    jog.TCRy = 0
+    jog.TCRz = 0
+    
+    MoveXYZ()
+
     almStatusLab.config(text="MOVED TO FINE CALIBRATION POSITION", bg = "yellow")
 
 def exeFineCalPos():
@@ -649,26 +734,29 @@ def exeFineCalPos():
     DECdurIndex = command.find("Dd")
     DECspdIndex = command.find("Ds")
     WristConfIndex = command.find("$")
-    CX = float(command[J1newIndex+3:J2newIndex-1])
-    CY = float(command[J2newIndex+3:J3newIndex-1])
-    CZ = float(command[J3newIndex+3:J4newIndex-1])
-    CRx = float(command[J4newIndex+3:J5newIndex-1])
-    CRy = float(command[J5newIndex+3:J6newIndex-1])
-    CRz = float(command[J6newIndex+3:TRnewIndex-1])
-    Track = float(command[TRnewIndex+3:SpeedIndex-1])
-    newSpeed = str(command[SpeedIndex+6:ACCdurIndex-1])
-    ACCdur = command[ACCdurIndex+3:ACCspdIndex-1]
-    ACCspd = command[ACCspdIndex+3:DECdurIndex-1]
-    DECdur = command[DECdurIndex+3:DECspdIndex-1]
-    DECspd = command[DECspdIndex+3:WristConfIndex-1]
-    WC = command[WristConfIndex+1:]
-    TCX = 0
-    TCY = 0
-    TCZ = 0
-    TCRx = 0
-    TCRy = 0
-    TCRz = 0
-    CalXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track)
+    jog.CX = float(command[J1newIndex+3:J2newIndex-1])
+    jog.CY = float(command[J2newIndex+3:J3newIndex-1])
+    jog.CZ = float(command[J3newIndex+3:J4newIndex-1])
+    jog.CRx = float(command[J4newIndex+3:J5newIndex-1])
+    jog.CRy = float(command[J5newIndex+3:J6newIndex-1])
+    jog.CRz = float(command[J6newIndex+3:TRnewIndex-1])
+    jog.Track = float(command[TRnewIndex+3:SpeedIndex-1])
+    jog.newSpeed = str(command[SpeedIndex+6:ACCdurIndex-1])
+    jog.ACCdur = command[ACCdurIndex+3:ACCspdIndex-1]
+    jog.ACCspd = command[ACCspdIndex+3:DECdurIndex-1]
+    jog.DECdur = command[DECdurIndex+3:DECspdIndex-1]
+    jog.DECspd = command[DECspdIndex+3:WristConfIndex-1]
+    jog.WC = command[WristConfIndex+1:]
+    jog.TCX = 0
+    jog.TCY = 0
+    jog.TCZ = 0
+    jog.TCRx = 0
+    jog.TCRy = 0
+    jog.TCRz = 0
+    
+    CalXYZ()
+    # CalXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track)
+    
     almStatusLab.config(text="CALIBRATED TO FINE CALIBRATE POSITION", bg = "orange")
 
 def stepFwd():
@@ -793,32 +881,32 @@ def calRobotAll():
     calRobot(calaxis,speed)
 
     ### calc correct calibration direction
-    if(J1caldir == J1motdir):
+    if(cal.J1caldir == mot.J1motdir):
         J1caldrive = "1"
     else:
         J1caldrive = "0"
 
-    if(J2caldir == J2motdir):
+    if(cal.J2caldir == mot.J2motdir):
         J2caldrive = "1"
     else:
         J2caldrive = "0"
 
-    if(J3caldir == J3motdir):
+    if(cal.J3caldir == mot.J3motdir):
         J3caldrive = "1"
     else:
         J3caldrive = "0"
 
-    if(J4caldir == J4motdir):
+    if(cal.J4caldir == mot.J4motdir):
         J4caldrive = "1"
     else:
         J4caldrive = "0"
 
-    if(J5caldir == J5motdir):
+    if(cal.J5caldir == mot.J5motdir):
         J5caldrive = "1"
     else:
         J5caldrive = "0"
 
-    if(J6caldir == J6motdir):
+    if(cal.J6caldir == mot.J6motdir):
         J6caldrive = "1"
     else:
         J6caldrive = "0"
@@ -836,7 +924,7 @@ def calRobotJ1():
     calRobot(calaxis,speed)
 
     ### calc correct calibration direction
-    if(J1caldir == J1motdir):
+    if(cal.J1caldir == mot.J1motdir):
         J1caldrive = "1"
     else:
         J1caldrive = "0"
@@ -854,7 +942,7 @@ def calRobotJ2():
     calRobot(calaxis,speed)
 
     ### calc correct calibration direction
-    if(J2caldir == J2motdir):
+    if(cal.J2caldir == mot.J2motdir):
         J2caldrive = "1"
     else:
         J2caldrive = "0"
@@ -872,7 +960,7 @@ def calRobotJ3():
     calRobot(calaxis,speed)
 
     ### calc correct calibration direction
-    if(J3caldir == J3motdir):
+    if(cal.J3caldir == mot.J3motdir):
         J3caldrive = "1"
     else:
         J3caldrive = "0"
@@ -890,7 +978,7 @@ def calRobotJ4():
     calRobot(calaxis,speed)
 
     ### calc correct calibration direction
-    if(J4caldir == J4motdir):
+    if(cal.J4caldir == mot.J4motdir):
         J4caldrive = "1"
     else:
         J4caldrive = "0"
@@ -908,7 +996,7 @@ def calRobotJ5():
     calRobot(calaxis,speed)
 
     ### calc correct calibration direction
-    if(J5caldir == J5motdir):
+    if(cal.J5caldir == mot.J5motdir):
         J5caldrive = "1"
     else:
         J5caldrive = "0"
@@ -926,7 +1014,7 @@ def calRobotJ6():
     calRobot(calaxis,speed)
 
     ### calc correct calibration direction
-    if(J6caldir == J6motdir):
+    if(cal.J6caldir == mot.J6motdir):
         J6caldrive = "1"
     else:
         J6caldrive = "0"
@@ -948,62 +1036,62 @@ def calRobot(calaxis,speed):
 
     ###
     if (J1axis == "1"):
-        J1step = str(J1StepLim)
+        J1step = str(joint.J1StepLim)
     else:
         J1step = "0"
 
     if (J2axis == "1"):
-        J2step = str(J2StepLim)
+        J2step = str(joint.J2StepLim)
     else:
         J2step = "0"
 
     if (J3axis == "1"):
-        J3step = str(J3StepLim)
+        J3step = str(joint.J3StepLim)
     else:
         J3step = "0"
 
     if (J4axis == "1"):
-        J4step = str(J4StepLim)
+        J4step = str(joint.J4StepLim)
     else:
         J4step = "0"
 
     if (J5axis == "1"):
-        J5step = str(J5StepLim)
+        J5step = str(joint.J5StepLim)
     else:
         J5step = "0"
 
     if (J6axis == "1"):
-        J6step = str(J6StepLim)
+        J6step = str(joint.J6StepLim)
     else:
         J6step = "0"
 
     ### calc correct calibration direction
-    if(J1caldir == J1motdir):
+    if(cal.J1caldir == mot.J1motdir):
         J1caldrive = "0"
     else:
         J1caldrive = "1"
 
-    if(J2caldir == J2motdir):
+    if(cal.J2caldir == mot.J2motdir):
         J2caldrive = "0"
     else:
         J2caldrive = "1"
 
-    if(J3caldir == J3motdir):
+    if(cal.J3caldir == mot.J3motdir):
         J3caldrive = "0"
     else:
         J3caldrive = "1"
 
-    if(J4caldir == J4motdir):
+    if(cal.J4caldir == mot.J4motdir):
         J4caldrive = "0"
     else:
         J4caldrive = "1"
 
-    if(J5caldir == J5motdir):
+    if(cal.J5caldir == mot.J5motdir):
         J5caldrive = "0"
     else:
         J5caldrive = "1"
 
-    if(J6caldir == J6motdir):
+    if(cal.J6caldir == mot.J6motdir):
         J6caldrive = "0"
     else:
         J6caldrive = "1"
@@ -1013,101 +1101,87 @@ def calRobot(calaxis,speed):
     ser.flushInput()
     calvalue = ser.readline()
 
-    global calStat
-
     if (calvalue == "pass\n"):
-        calStat = 1
+        cal.calStat = 1
         calibration.delete(0, END)
 
         ##J1##
-        global J1StepCur
-        global J1AngCur
         if (J1axis == "1"):
 
-            if (J1caldir == "0"):
-                J1StepCur = 0
-                J1AngCur = J1NegAngLim
+            if (cal.J1caldir == "0"):
+                joint.J1StepCur = 0
+                joint.J1AngCur = joint.J1NegAngLim
             else:
-                J1StepCur = J1StepLim
-                J1AngCur = J1PosAngLim
+                joint.J1StepCur = joint.J1StepLim
+                joint.J1AngCur = joint.J1PosAngLim
 
             J1curAngEntryField.delete(0, 'end')
-            J1curAngEntryField.insert(0,str(J1AngCur))
+            J1curAngEntryField.insert(0,str(joint.J1AngCur))
 
         ##J2##
-        global J2StepCur
-        global J2AngCur
         if (J2axis == "1"):
 
-            if (J2caldir == "0"):
-                J2StepCur = 0
-                J2AngCur = J2NegAngLim
+            if (cal.J2caldir == "0"):
+                joint.J2StepCur = 0
+                joint.J2AngCur = joint.J2NegAngLim
             else:
-                J2StepCur = J2StepLim
-                J2AngCur = J2PosAngLim
+                joint.J2StepCur = joint.J2StepLim
+                joint.J2AngCur = joint.J2PosAngLim
 
             J2curAngEntryField.delete(0, 'end')
-            J2curAngEntryField.insert(0,str(J2AngCur))
+            J2curAngEntryField.insert(0,str(joint.J2AngCur))
 
         ##J3##
-        global J3StepCur
-        global J3AngCur
         if (J3axis == "1"):
 
-            if (J3caldir == "0"):
-                J3StepCur = 0
-                J3AngCur = J3NegAngLim
+            if (cal.J3caldir == "0"):
+                joint.J3StepCur = 0
+                joint.J3AngCur = joint.J3NegAngLim
             else:
-                J3StepCur = J3StepLim
-                J3AngCur = J3PosAngLim
+                joint.J3StepCur = joint.J3StepLim
+                joint.J3AngCur = joint.J3PosAngLim
 
             J3curAngEntryField.delete(0, 'end')
-            J3curAngEntryField.insert(0,str(J3AngCur))
+            J3curAngEntryField.insert(0,str(joint.J3AngCur))
 
         ##J4##
-        global J4StepCur
-        global J4AngCur
         if (J4axis == "1"):
 
-            if (J4caldir == "0"):
-                J4StepCur = 0
-                J4AngCur = J4NegAngLim
+            if (cal.J4caldir == "0"):
+                joint.J4StepCur = 0
+                joint.J4AngCur = joint.J4NegAngLim
             else:
-                J4StepCur = J4StepLim
-                J4AngCur = J4PosAngLim
+                joint.J4StepCur = joint.J4StepLim
+                joint.J4AngCur = joint.J4PosAngLim
 
             J4curAngEntryField.delete(0, 'end')
-            J4curAngEntryField.insert(0,str(J4AngCur))
+            J4curAngEntryField.insert(0,str(joint.J4AngCur))
 
-        ##J5##
-        global J5StepCur
-        global J5AngCur
+        ##J5##c
         if (J5axis == "1"):
 
-            if (J5caldir == "0"):
-                J5StepCur = 0
-                J5AngCur = J5NegAngLim
+            if (cal.J5caldir == "0"):
+                joint.J5StepCur = 0
+                joint.J5AngCur = joint.J5NegAngLim
             else:
-                J5StepCur = J5StepLim
-                J5AngCur = J5PosAngLim
+                joint.J5StepCur = joint.J5StepLim
+                joint.J5AngCur = joint.J5PosAngLim
 
             J5curAngEntryField.delete(0, 'end')
-            J5curAngEntryField.insert(0,str(J5AngCur))
+            J5curAngEntryField.insert(0,str(joint.J5AngCur))
 
         ##J6##
-        global J6StepCur
-        global J6AngCur
         if (J6axis == "1"):
 
-            if (J6caldir == "0"):
-                J6StepCur = 0
-                J6AngCur = J6NegAngLim
+            if (cal.J6caldir == "0"):
+                joint.J6StepCur = 0
+                joint.J6AngCur = joint.J6NegAngLim
             else:
-                J6StepCur = J6StepLim
-                J6AngCur = J6PosAngLim
+                joint.J6StepCur = joint.J6StepLim
+                joint.J6AngCur = joint.J6PosAngLim
 
             J6curAngEntryField.delete(0, 'end')
-            J6curAngEntryField.insert(0,str(J6AngCur))
+            J6curAngEntryField.insert(0,str(joint.J6AngCur))
 
         value=calibration.get(0,END)
         pickle.dump(value,open("/home/pi/Documents/AR2/RaspberryPi/ARbot.cal","wb"))
@@ -1115,7 +1189,7 @@ def calRobot(calaxis,speed):
         DisplaySteps()
     else:
         if (calvalue == "fail\n"):
-            calStat = 0
+            cal.calStat = 0
             almStatusLab.config(text="CALIBRATION FAILED", bg = "red")
 
     CalcFwdKin()
@@ -1125,61 +1199,46 @@ def calRobotMid():
     calibration.delete(0, END)
 
     ##J1##
-    global J1StepCur
-    global J1AngCur
-    J1StepCur = J1StepLim/2
-    J1AngCur = (J1NegAngLim + J1PosAngLim)/2
+    joint.J1StepCur = joint.J1StepLim/2
+    joint.J1AngCur = (joint.J1NegAngLim + joint.J1PosAngLim)/2
     J1curAngEntryField.delete(0, 'end')
-    J1curAngEntryField.insert(0,str(J1AngCur))
+    J1curAngEntryField.insert(0,str(joint.J1AngCur))
 
     ##J2##
-    global J2StepCur
-    global J2AngCur
-    J2StepCur = J2StepLim/2
-    J2AngCur = (J2NegAngLim + J2PosAngLim)/2
+    joint.J2StepCur = joint.J2StepLim/2
+    joint.J2AngCur = (joint.J2NegAngLim + joint.J2PosAngLim)/2
     J2curAngEntryField.delete(0, 'end')
-    J2curAngEntryField.insert(0,str(J2AngCur))
+    J2curAngEntryField.insert(0,str(joint.J2AngCur))
 
     ##J3##
-    global J3StepCur
-    global J3AngCur
-    J3StepCur = J3StepLim/2
-    J3AngCur = (J3NegAngLim + J3PosAngLim)/2
+    joint.J3StepCur = joint.J3StepLim/2
+    joint.J3AngCur = (joint.J3NegAngLim + joint.J3PosAngLim)/2
     J3curAngEntryField.delete(0, 'end')
-    J3curAngEntryField.insert(0,str(J3AngCur))
+    J3curAngEntryField.insert(0,str(joint.J3AngCur))
 
     ##J4##
-    global J4StepCur
-    global J4AngCur
-    J4StepCur = J4StepLim/2
-    J4AngCur = (J4NegAngLim + J4PosAngLim)/2
+    joint.J4StepCur = joint.J4StepLim/2
+    joint.J4AngCur = (joint.J4NegAngLim + joint.J4PosAngLim)/2
     J4curAngEntryField.delete(0, 'end')
-    J4curAngEntryField.insert(0,str(J4AngCur))
+    J4curAngEntryField.insert(0,str(joint.J4AngCur))
 
     ##J5##
-    global J5StepCur
-    global J5AngCur
-    J5StepCur = J5StepLim/2
-    J5AngCur = (J5NegAngLim + J5PosAngLim)/2
+    joint.J5StepCur = joint.J5StepLim/2
+    joint.J5AngCur = (joint.J5NegAngLim + joint.J5PosAngLim)/2
     J5curAngEntryField.delete(0, 'end')
-    J5curAngEntryField.insert(0,str(J5AngCur))
+    J5curAngEntryField.insert(0,str(joint.J5AngCur))
 
     ##J6##
-    global J6StepCur
-    global J6AngCur
-    J6StepCur = J6StepLim/2
-    J6AngCur = (J6NegAngLim + J6PosAngLim)/2
+    joint.J6StepCur = joint.J6StepLim/2
+    joint.J6AngCur = (joint.J6NegAngLim + joint.J6PosAngLim)/2
     J6curAngEntryField.delete(0, 'end')
-    J6curAngEntryField.insert(0,str(J6AngCur))
+    J6curAngEntryField.insert(0,str(joint.J6AngCur))
 
     ##J7##
-    global TrackStepLim
-    global TrackcurPos
-    global TrackLength
-    TrackStepLim = TrackStepLim/2
-    TrackcurPos = TrackLength/2
+    joint.TrackStepLim = joint.TrackStepLim/2
+    joint.TrackcurPos = joint.TrackLength/2
     TrackcurEntryField.delete(0, 'end')
-    TrackcurEntryField.insert(0,str(TrackcurPos))
+    TrackcurEntryField.insert(0,str(joint.TrackcurPos))
 
     value=calibration.get(0,END)
     pickle.dump(value,open("/home/pi/Documents/AR2/RaspberryPi/ARbot.cal","wb"))
@@ -1192,18 +1251,18 @@ def calRobotMid():
 
 def savePosData():
     calibration.delete(0, END)
-    calibration.insert(END, J1StepCur)
-    calibration.insert(END, J1AngCur)
-    calibration.insert(END, J2StepCur)
-    calibration.insert(END, J2AngCur)
-    calibration.insert(END, J3StepCur)
-    calibration.insert(END, J3AngCur)
-    calibration.insert(END, J4StepCur)
-    calibration.insert(END, J4AngCur)
-    calibration.insert(END, J5StepCur)
-    calibration.insert(END, J5AngCur)
-    calibration.insert(END, J6StepCur)
-    calibration.insert(END, J6AngCur)
+    calibration.insert(END, joint.J1StepCur)
+    calibration.insert(END, joint.J1AngCur)
+    calibration.insert(END, joint.J2StepCur)
+    calibration.insert(END, joint.J2AngCur)
+    calibration.insert(END, joint.J3StepCur)
+    calibration.insert(END, joint.J3AngCur)
+    calibration.insert(END, joint.J4StepCur)
+    calibration.insert(END, joint.J4AngCur)
+    calibration.insert(END, joint.J5StepCur)
+    calibration.insert(END, joint.J5AngCur)
+    calibration.insert(END, joint.J6StepCur)
+    calibration.insert(END, joint.J6AngCur)
     calibration.insert(END, comPortEntryField.get())
     calibration.insert(END, ProgEntryField.get())
     calibration.insert(END, servo0onEntryField.get())
@@ -1290,227 +1349,126 @@ def savePosData():
 
 
 def SaveAndApplyCalibration():
-    global J1NegAngLim
-    global J1PosAngLim
-    global J1StepLim
-    global J1DegPerStep
-    global J1StepCur
-    global J1AngCur
-    global J2NegAngLim
-    global J2PosAngLim
-    global J2StepLim
-    global J2DegPerStep
-    global J2StepCur
-    global J2AngCur
-    global J2NegAngLim
-    global J2PosAngLim
-    global J2StepLim
-    global J2DegPerStep
-    global J2StepCur
-    global J2AngCur
-    global J3NegAngLim
-    global J3PosAngLim
-    global J3StepLim
-    global J3DegPerStep
-    global J3StepCur
-    global J3AngCur
-    global J4NegAngLim
-    global J4PosAngLim
-    global J4StepLim
-    global J4DegPerStep
-    global J4StepCur
-    global J4AngCur
-    global J5NegAngLim
-    global J5PosAngLim
-    global J5StepLim
-    global J5DegPerStep
-    global J5StepCur
-    global J5AngCur
-    global J6NegAngLim
-    global J6PosAngLim
-    global J6StepLim
-    global J6DegPerStep
-    global J6StepCur
-    global J6AngCur
-    global XcurPos
-    global YcurPos
-    global ZcurPos
-    global RxcurPos
-    global RycurPos
-    global RzcurPos
-    global DHr1
-    global DHr2
-    global DHr3
-    global DHr4
-    global DHr5
-    global DHr6
-    global DHa1
-    global DHa2
-    global DHa3
-    global DHa4
-    global DHa5
-    global DHa6
-    global DHd1
-    global DHd2
-    global DHd3
-    global DHd4
-    global DHd5
-    global DHd6
-    global DHt1
-    global DHt2
-    global DHt3
-    global DHt4
-    global DHt5
-    global DHt6
-    global CalDir
-    global J1caldir
-    global J2caldir
-    global J3caldir
-    global J4caldir
-    global J5caldir
-    global J6caldir
-    global MotDir
-    global J1motdir
-    global J2motdir
-    global J3motdir
-    global J4motdir
-    global J5motdir
-    global J6motdir
-    global TrackcurPos
-    global TrackLength
-    global TrackStepLim
-    global VisFileLoc
-    global VisProg
-    global VisOrigXpix
-    global VisOrigXmm
-    global VisOrigYpix
-    global VisOrigYmm
-    global VisEndXpix
-    global VisEndXmm
-    global VisEndYpix
-    global VisEndYmm
-
     ###joint variables
-    J1NegAngLim = int(J1NegAngLimEntryField.get())
-    J1PosAngLim = int(J1PosAngLimEntryField.get())
-    J1StepLim = int(J1StepLimEntryField.get())
-    J1DegPerStep = float((J1PosAngLim - J1NegAngLim)/float(J1StepLim))
-    J2NegAngLim = int(J2NegAngLimEntryField.get())
-    J2PosAngLim = int(J2PosAngLimEntryField.get())
-    J2StepLim = int(J2StepLimEntryField.get())
-    J2DegPerStep = float((J2PosAngLim - J2NegAngLim)/float(J2StepLim))
-    J3NegAngLim = int(J3NegAngLimEntryField.get())
-    J3PosAngLim = int(J3PosAngLimEntryField.get())
-    J3StepLim = int(J3StepLimEntryField.get())
-    J3DegPerStep = float((J3PosAngLim - J3NegAngLim)/float(J3StepLim))
-    J4NegAngLim = int(J4NegAngLimEntryField.get())
-    J4PosAngLim = int(J4PosAngLimEntryField.get())
-    J4StepLim = int(J4StepLimEntryField.get())
-    J4DegPerStep = float((J4PosAngLim - J4NegAngLim)/float(J4StepLim))
-    J5NegAngLim = int(J5NegAngLimEntryField.get())
-    J5PosAngLim = int(J5PosAngLimEntryField.get())
-    J5StepLim = int(J5StepLimEntryField.get())
-    J5DegPerStep = float((J5PosAngLim - J5NegAngLim)/float(J5StepLim))
-    J6NegAngLim = int(J6NegAngLimEntryField.get())
-    J6PosAngLim = int(J6PosAngLimEntryField.get())
-    J6StepLim = int(J6StepLimEntryField.get())
-    J6DegPerStep = float((J6PosAngLim - J6NegAngLim)/float(J6StepLim))
+    joint.J1NegAngLim = int(J1NegAngLimEntryField.get())
+    joint.J1PosAngLim = int(J1PosAngLimEntryField.get())
+    joint.J1StepLim = int(J1StepLimEntryField.get())
+    joint.J1DegPerStep = float((joint.J1PosAngLim - joint.J1NegAngLim)/float(joint.J1StepLim))
+    joint.J2NegAngLim = int(J2NegAngLimEntryField.get())
+    joint.J2PosAngLim = int(J2PosAngLimEntryField.get())
+    joint.J2StepLim = int(J2StepLimEntryField.get())
+    joint.J2DegPerStep = float((joint.J2PosAngLim - joint.J2NegAngLim)/float(joint.J2StepLim))
+    joint.J3NegAngLim = int(J3NegAngLimEntryField.get())
+    joint.J3PosAngLim = int(J3PosAngLimEntryField.get())
+    joint.J3StepLim = int(J3StepLimEntryField.get())
+    joint.J3DegPerStep = float((joint.J3PosAngLim - joint.J3NegAngLim)/float(joint.J3StepLim))
+    joint.J4NegAngLim = int(J4NegAngLimEntryField.get())
+    joint.J4PosAngLim = int(J4PosAngLimEntryField.get())
+    joint.J4StepLim = int(J4StepLimEntryField.get())
+    joint.J4DegPerStep = float((joint.J4PosAngLim - joint.J4NegAngLim)/float(joint.J4StepLim))
+    joint.J5NegAngLim = int(J5NegAngLimEntryField.get())
+    joint.J5PosAngLim = int(J5PosAngLimEntryField.get())
+    joint.J5StepLim = int(J5StepLimEntryField.get())
+    joint.J5DegPerStep = float((joint.J5PosAngLim - joint.J5NegAngLim)/float(joint.J5StepLim))
+    joint.J6NegAngLim = int(J6NegAngLimEntryField.get())
+    joint.J6PosAngLim = int(J6PosAngLimEntryField.get())
+    joint.J6StepLim = int(J6StepLimEntryField.get())
+    joint.J6DegPerStep = float((joint.J6PosAngLim - joint.J6NegAngLim)/float(joint.J6StepLim))
 
     ####AXIS LIMITS LABELS GREEN######
     AxLimCol = "OliveDrab4"
-    J1PlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = "+"+str(int(J1PosAngLim)))
+    J1PlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = "+"+str(int(joint.J1PosAngLim)))
     J1PlimLab.place(x=630, y=10)
-    J1NlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = str(int(J1NegAngLim)))
+    J1NlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = str(int(joint.J1NegAngLim)))
     J1NlimLab.place(x=580, y=10)
-    J2PlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = str(int(J2PosAngLim)))
+    J2PlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = str(int(joint.J2PosAngLim)))
     J2PlimLab.place(x=725, y=10)
-    J2NlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = str(int(J2NegAngLim)))
+    J2NlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = str(int(joint.J2NegAngLim)))
     J2NlimLab.place(x=670, y=10)
-    J3PlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = "+"+str(int(J3PosAngLim)))
+    J3PlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = "+"+str(int(joint.J3PosAngLim)))
     J3PlimLab.place(x=815, y=10)
-    J3NlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = "+"+str(int(J3NegAngLim)))
+    J3NlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = "+"+str(int(joint.J3NegAngLim)))
     J3NlimLab.place(x=770, y=10)
-    J4PlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = "+"+str(int(J4PosAngLim)))
+    J4PlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = "+"+str(int(joint.J4PosAngLim)))
     J4PlimLab.place(x=905, y=10)
-    J4NlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = str(int(J4NegAngLim)))
+    J4NlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = str(int(joint.J4NegAngLim)))
     J4NlimLab.place(x=850, y=10)
-    J5PlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = "+"+str(int(J5PosAngLim)))
+    J5PlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = "+"+str(int(joint.J5PosAngLim)))
     J5PlimLab.place(x=995, y=10)
-    J5NlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = str(int(J5NegAngLim)))
+    J5NlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = str(int(joint.J5NegAngLim)))
     J5NlimLab.place(x=940, y=10)
-    J6PlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = "+"+str(int(J6PosAngLim)))
+    J6PlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = "+"+str(int(joint.J6PosAngLim)))
     J6PlimLab.place(x=1085, y=10)
-    J6NlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = str(int(J6NegAngLim)))
+    J6NlimLab = Label(tab1, font=("Arial", 8), fg=AxLimCol, text = str(int(joint.J6NegAngLim)))
     J6NlimLab.place(x=1030, y=10)
-    DHr1 = float(DHr1EntryField.get())
-    DHr2 = float(DHr2EntryField.get())
-    DHr3 = float(DHr3EntryField.get())
-    DHr4 = float(DHr4EntryField.get())
-    DHr5 = float(DHr5EntryField.get())
-    DHr6 = float(DHr6EntryField.get())
-    DHa1 = float(DHa1EntryField.get())
-    DHa2 = float(DHa2EntryField.get())
-    DHa3 = float(DHa3EntryField.get())
-    DHa4 = float(DHa4EntryField.get())
-    DHa5 = float(DHa5EntryField.get())
-    DHa6 = float(DHa6EntryField.get())
-    DHd1 = float(DHd1EntryField.get())
-    DHd2 = float(DHd2EntryField.get())
-    DHd3 = float(DHd3EntryField.get())
-    DHd4 = float(DHd4EntryField.get())
-    DHd5 = float(DHd5EntryField.get())
-    DHd6 = float(DHd6EntryField.get())
-    DHt1 = float(DHt1EntryField.get())
-    DHt2 = float(DHt2EntryField.get())
-    DHt3 = float(DHt3EntryField.get())
-    DHt4 = float(DHt4EntryField.get())
-    DHt5 = float(DHt5EntryField.get())
-    DHt6 = float(DHt6EntryField.get())
+    dh.DHr1 = float(DHr1EntryField.get())
+    dh.DHr2 = float(DHr2EntryField.get())
+    dh.DHr3 = float(DHr3EntryField.get())
+    dh.DHr4 = float(DHr4EntryField.get())
+    dh.DHr5 = float(DHr5EntryField.get())
+    dh.DHr6 = float(DHr6EntryField.get())
+    dh.DHa1 = float(DHa1EntryField.get())
+    dh.DHa2 = float(DHa2EntryField.get())
+    dh.DHa3 = float(DHa3EntryField.get())
+    dh.DHa4 = float(DHa4EntryField.get())
+    dh.DHa5 = float(DHa5EntryField.get())
+    dh.DHa6 = float(DHa6EntryField.get())
+    dh.DHd1 = float(DHd1EntryField.get())
+    dh.DHd2 = float(DHd2EntryField.get())
+    dh.DHd3 = float(DHd3EntryField.get())
+    dh.DHd4 = float(DHd4EntryField.get())
+    dh.DHd5 = float(DHd5EntryField.get())
+    dh.DHd6 = float(DHd6EntryField.get())
+    dh.DHt1 = float(DHt1EntryField.get())
+    dh.DHt2 = float(DHt2EntryField.get())
+    dh.DHt3 = float(DHt3EntryField.get())
+    dh.DHt4 = float(DHt4EntryField.get())
+    dh.DHt5 = float(DHt5EntryField.get())
+    dh.DHt6 = float(DHt6EntryField.get())
 
-    CalDir = CalDirEntryField.get()
-    J1caldir = CalDir[:-5]
-    J2caldir = CalDir[1:-4]
-    J3caldir = CalDir[2:-3]
-    J4caldir = CalDir[3:-2]
-    J5caldir = CalDir[4:-1]
-    J6caldir = CalDir[5:]
+    cal.CalDir = CalDirEntryField.get()
+    cal.J1caldir = cal.CalDir[:-5]
+    cal.J2caldir = cal.CalDir[1:-4]
+    cal.J3caldir = cal.CalDir[2:-3]
+    cal.J4caldir = cal.CalDir[3:-2]
+    cal.J5caldir = cal.CalDir[4:-1]
+    cal.J6caldir = cal.CalDir[5:]
 
-    MotDir = MotDirEntryField.get()
-    J1motdir = MotDir[:-5]
-    J2motdir = MotDir[1:-4]
-    J3motdir = MotDir[2:-3]
-    J4motdir = MotDir[3:-2]
-    J5motdir = MotDir[4:-1]
-    J6motdir = MotDir[5:]
+    mot.MotDir = MotDirEntryField.get()
+    mot.J1motdir = mot.MotDir[:-5]
+    mot.J2motdir = mot.MotDir[1:-4]
+    mot.J3motdir = mot.MotDir[2:-3]
+    mot.J4motdir = mot.MotDir[3:-2]
+    mot.J5motdir = mot.MotDir[4:-1]
+    mot.J6motdir = mot.MotDir[5:]
 
-    TrackcurPos = float(TrackcurEntryField.get())
-    TrackLength = float(TrackLengthEntryField.get())
-    TrackStepLim = float(TrackStepLimEntryField.get())
-    VisFileLoc = VisFileLocEntryField.get()
-    VisProg = visoptions.get()
-    VisOrigXpix = float(VisPicOxPEntryField.get())
-    VisOrigXmm  = float(VisPicOxMEntryField.get())
-    VisOrigYpix = float(VisPicOyPEntryField.get())
-    VisOrigYmm  = float(VisPicOyMEntryField.get())
-    VisEndXpix  = float(VisPicXPEntryField.get())
-    VisEndXmm   = float(VisPicXMEntryField.get())
-    VisEndYpix  = float(VisPicYPEntryField.get())
-    VisEndYmm   = float(VisPicYMEntryField.get())
+    joint.TrackcurPos = float(TrackcurEntryField.get())
+    joint.TrackLength = float(TrackLengthEntryField.get())
+    joint.TrackStepLim = float(TrackStepLimEntryField.get())
+    
+    vis.VisFileLoc = VisFileLocEntryField.get()
+    vis.VisProg = visoptions.get()
+    vis.VisOrigXpix = float(VisPicOxPEntryField.get())
+    vis.VisOrigXmm  = float(VisPicOxMEntryField.get())
+    vis.VisOrigYpix = float(VisPicOyPEntryField.get())
+    vis.VisOrigYmm  = float(VisPicOyMEntryField.get())
+    vis.VisEndXpix  = float(VisPicXPEntryField.get())
+    vis.VisEndXmm   = float(VisPicXMEntryField.get())
+    vis.VisEndYpix  = float(VisPicYPEntryField.get())
+    vis.VisEndYmm   = float(VisPicYMEntryField.get())
+    
     savePosData()
 
 
 def DisplaySteps():
-    J1stepsLab['text'] = str(J1StepCur)
-    J2stepsLab['text'] = str(J2StepCur)
-    J3stepsLab['text'] = str(J3StepCur)
-    J4stepsLab['text'] = str(J4StepCur)
-    J5stepsLab['text'] = str(J5StepCur)
-    J6stepsLab['text'] = str(J6StepCur)
+    J1stepsLab['text'] = str(joint.J1StepCur)
+    J2stepsLab['text'] = str(joint.J2StepCur)
+    J3stepsLab['text'] = str(joint.J3StepCur)
+    J4stepsLab['text'] = str(joint.J4StepCur)
+    J5stepsLab['text'] = str(joint.J5StepCur)
+    J6stepsLab['text'] = str(joint.J6StepCur)
 
 def J1jogNeg():
-    global JogStepsStat
-    global J1StepCur
-    global J1AngCur
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     Speed = speedEntryField.get()
     ACCdur = ACCdurField.get()
@@ -1519,22 +1477,23 @@ def J1jogNeg():
     DECspd = DECspeedField.get()
     J1Degs = float(J1jogDegsEntryField.get())
 
-    if JogStepsStat.get() == 0:
-        J1jogSteps = int(J1Degs/J1DegPerStep)
+    if joint.JogStepsStat.get() == 0:
+        J1jogSteps = int(J1Degs / joint.J1DegPerStep)
     else:
         #switch from degs to steps
         J1jogSteps = J1Degs
-        J1Degs = J1Degs*J1DegPerStep
+        J1Degs = J1Degs * joint.J1DegPerStep
 
-    if (J1Degs <= -(J1NegAngLim - J1AngCur)):
-        ser.write("MJA"+J1motdir+str(J1jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
+    if (J1Degs <= -(joint.J1NegAngLim - joint.J1AngCur)):
+        ser.write("MJA"+mot.J1motdir+str(J1jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        J1StepCur = J1StepCur - int(J1jogSteps)
-        J1AngCur = round(J1NegAngLim + (J1StepCur * J1DegPerStep),2)
+        joint.J1StepCur = joint.J1StepCur - int(J1jogSteps)
+        joint.J1AngCur = round(joint.J1NegAngLim + (joint.J1StepCur * joint.J1DegPerStep),2)
         J1curAngEntryField.delete(0, 'end')
-        J1curAngEntryField.insert(0,str(J1AngCur))
+        J1curAngEntryField.insert(0,str(joint.J1AngCur))
+        
         savePosData()
         CalcFwdKin()
     else:
@@ -1544,9 +1503,6 @@ def J1jogNeg():
 
 
 def J1jogPos():
-    global JogStepsStat
-    global J1StepCur
-    global J1AngCur
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     Speed = speedEntryField.get()
     ACCdur = ACCdurField.get()
@@ -1555,28 +1511,29 @@ def J1jogPos():
     DECspd = DECspeedField.get()
     J1Degs = float(J1jogDegsEntryField.get())
 
-    if JogStepsStat.get() == 0:
-        J1jogSteps = int(J1Degs/J1DegPerStep)
+    if joint.JogStepsStat.get() == 0:
+        J1jogSteps = int(J1Degs / joint.J1DegPerStep)
     else:
         #switch from degs to steps
         J1jogSteps = J1Degs
-        J1Degs = J1Degs*J1DegPerStep
+        J1Degs = J1Degs * joint.J1DegPerStep
 
     #calc pos dir output
-    if (J1motdir == "0"):
+    if (mot.J1motdir == "0"):
         J1drivedir = "1"
     else:
         J1drivedir = "0"
 
-    if (J1Degs <= (J1PosAngLim - J1AngCur)):
+    if (J1Degs <= (joint.J1PosAngLim - joint.J1AngCur)):
         ser.write("MJA"+J1drivedir+str(J1jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        J1StepCur = J1StepCur + int(J1jogSteps)
-        J1AngCur = round(J1NegAngLim + (J1StepCur * J1DegPerStep),2)
+        joint.J1StepCur = joint.J1StepCur + int(J1jogSteps)
+        joint.J1AngCur = round(joint.J1NegAngLim + (joint.J1StepCur * joint.J1DegPerStep),2)
         J1curAngEntryField.delete(0, 'end')
-        J1curAngEntryField.insert(0,str(J1AngCur))
+        J1curAngEntryField.insert(0,str(joint.J1AngCur))
+        
         savePosData()
         CalcFwdKin()
     else:
@@ -1586,9 +1543,6 @@ def J1jogPos():
 
 
 def J2jogNeg():
-    global JogStepsStat
-    global J2StepCur
-    global J2AngCur
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     Speed = speedEntryField.get()
     ACCdur = ACCdurField.get()
@@ -1597,22 +1551,23 @@ def J2jogNeg():
     DECspd = DECspeedField.get()
     J2Degs = float(J2jogDegsEntryField.get())
 
-    if JogStepsStat.get() == 0:
-        J2jogSteps = int(J2Degs/J2DegPerStep)
+    if joint.JogStepsStat.get() == 0:
+        J2jogSteps = int(J2Degs / joint.J2DegPerStep)
     else:
         #switch from degs to steps
         J2jogSteps = J2Degs
-        J2Degs = J2Degs*J2DegPerStep
+        J2Degs = J2Degs * joint.J2DegPerStep
 
-    if (J2Degs <= -(J2NegAngLim - J2AngCur)):
-        ser.write("MJB"+J2motdir+str(J2jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
+    if (J2Degs <= -(joint.J2NegAngLim - joint.J2AngCur)):
+        ser.write("MJB"+mot.J2motdir+str(J2jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        J2StepCur = J2StepCur - int(J2jogSteps)
-        J2AngCur = round(J2NegAngLim + (J2StepCur * J2DegPerStep),2)
+        joint.J2StepCur = joint.J2StepCur - int(J2jogSteps)
+        joint.J2AngCur = round(joint.J2NegAngLim + (joint.J2StepCur * joint.J2DegPerStep),2)
         J2curAngEntryField.delete(0, 'end')
-        J2curAngEntryField.insert(0,str(J2AngCur))
+        J2curAngEntryField.insert(0,str(joint.J2AngCur))
+        
         savePosData()
         CalcFwdKin()
     else:
@@ -1622,9 +1577,6 @@ def J2jogNeg():
 
 
 def J2jogPos():
-    global JogStepsStat
-    global J2StepCur
-    global J2AngCur
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     Speed = speedEntryField.get()
     ACCdur = ACCdurField.get()
@@ -1633,28 +1585,29 @@ def J2jogPos():
     DECspd = DECspeedField.get()
     J2Degs = float(J2jogDegsEntryField.get())
 
-    if JogStepsStat.get() == 0:
-        J2jogSteps = int(J2Degs/J2DegPerStep)
+    if joint.JogStepsStat.get() == 0:
+        J2jogSteps = int(J2Degs / joint.J2DegPerStep)
     else:
         #switch from degs to steps
         J2jogSteps = J2Degs
-        J2Degs = J2Degs*J2DegPerStep
+        J2Degs = J2Degs * joint.J2DegPerStep
 
     #calc pos dir output
-    if (J2motdir == "0"):
+    if (mot.J2motdir == "0"):
         J2drivedir = "1"
     else:
         J2drivedir = "0"
 
-    if (J2Degs <= (J2PosAngLim - J2AngCur)):
+    if (J2Degs <= (joint.J2PosAngLim - joint.J2AngCur)):
         ser.write("MJB"+J2drivedir+str(J2jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        J2StepCur = J2StepCur + int(J2jogSteps)
-        J2AngCur = round(J2NegAngLim + (J2StepCur * J2DegPerStep),2)
+        joint.J2StepCur = joint.J2StepCur + int(J2jogSteps)
+        joint.J2AngCur = round(joint.J2NegAngLim + (joint.J2StepCur * joint.J2DegPerStep),2)
         J2curAngEntryField.delete(0, 'end')
-        J2curAngEntryField.insert(0,str(J2AngCur))
+        J2curAngEntryField.insert(0,str(joint.J2AngCur))
+        
         savePosData()
         CalcFwdKin()
     else:
@@ -1664,9 +1617,6 @@ def J2jogPos():
 
 
 def J3jogNeg():
-    global JogStepsStat
-    global J3StepCur
-    global J3AngCur
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     Speed = speedEntryField.get()
     ACCdur = ACCdurField.get()
@@ -1675,22 +1625,23 @@ def J3jogNeg():
     DECspd = DECspeedField.get()
     J3Degs = float(J3jogDegsEntryField.get())
 
-    if JogStepsStat.get() == 0:
-        J3jogSteps = int(J3Degs/J3DegPerStep)
+    if joint.JogStepsStat.get() == 0:
+        J3jogSteps = int(J3Degs / joint.J3DegPerStep)
     else:
         #switch from degs to steps
         J3jogSteps = J3Degs
-        J3Degs = J3Degs*J3DegPerStep
+        J3Degs = J3Degs * joint.J3DegPerStep
 
-    if (J3Degs <= -(J3NegAngLim - J3AngCur)):
-        ser.write("MJC"+J3motdir+str(J3jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
+    if (J3Degs <= -(joint.J3NegAngLim - joint.J3AngCur)):
+        ser.write("MJC"+mot.J3motdir+str(J3jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        J3StepCur = J3StepCur - int(J3jogSteps)
-        J3AngCur = round(J3NegAngLim + (J3StepCur * J3DegPerStep),2)
+        joint.J3StepCur = joint.J3StepCur - int(J3jogSteps)
+        joint.J3AngCur = round(joint.J3NegAngLim + (joint.J3StepCur * joint.J3DegPerStep),2)
         J3curAngEntryField.delete(0, 'end')
-        J3curAngEntryField.insert(0,str(J3AngCur))
+        J3curAngEntryField.insert(0,str(joint.J3AngCur))
+        
         savePosData()
         CalcFwdKin()
     else:
@@ -1700,9 +1651,6 @@ def J3jogNeg():
 
 
 def J3jogPos():
-    global JogStepsStat
-    global J3StepCur
-    global J3AngCur
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     Speed = speedEntryField.get()
     ACCdur = ACCdurField.get()
@@ -1711,28 +1659,29 @@ def J3jogPos():
     DECspd = DECspeedField.get()
     J3Degs = float(J3jogDegsEntryField.get())
 
-    if JogStepsStat.get() == 0:
-        J3jogSteps = int(J3Degs/J3DegPerStep)
+    if joint.JogStepsStat.get() == 0:
+        J3jogSteps = int(J3Degs / joint.J3DegPerStep)
     else:
         #switch from degs to steps
         J3jogSteps = J3Degs
-        J3Degs = J3Degs*J3DegPerStep
+        J3Degs = J3Degs * joint.J3DegPerStep
 
     #calc pos dir output
-    if (J3motdir == "0"):
+    if (mot.J3motdir == "0"):
         J3drivedir = "1"
     else:
         J3drivedir = "0"
 
-    if (J3Degs <= (J3PosAngLim - J3AngCur)):
+    if (J3Degs <= (joint.J3PosAngLim - joint.J3AngCur)):
         ser.write("MJC"+J3drivedir+str(J3jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        J3StepCur = J3StepCur + int(J3jogSteps)
-        J3AngCur = round(J3NegAngLim + (J3StepCur * J3DegPerStep),2)
+        joint.J3StepCur = joint.J3StepCur + int(J3jogSteps)
+        joint.J3AngCur = round(joint.J3NegAngLim + (joint.J3StepCur * joint.J3DegPerStep),2)
         J3curAngEntryField.delete(0, 'end')
-        J3curAngEntryField.insert(0,str(J3AngCur))
+        J3curAngEntryField.insert(0,str(joint.J3AngCur))
+        
         savePosData()
         CalcFwdKin()
     else:
@@ -1742,9 +1691,6 @@ def J3jogPos():
 
 
 def J4jogNeg():
-    global JogStepsStat
-    global J4StepCur
-    global J4AngCur
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     Speed = speedEntryField.get()
     ACCdur = ACCdurField.get()
@@ -1753,22 +1699,23 @@ def J4jogNeg():
     DECspd = DECspeedField.get()
     J4Degs = float(J4jogDegsEntryField.get())
 
-    if JogStepsStat.get() == 0:
-        J4jogSteps = int(J4Degs/J4DegPerStep)
+    if joint.JogStepsStat.get() == 0:
+        J4jogSteps = int(J4Degs / joint.J4DegPerStep)
     else:
         #switch from degs to steps
         J4jogSteps = J4Degs
-        J4Degs = J4Degs*J4DegPerStep
+        J4Degs = J4Degs * joint.J4DegPerStep
 
-    if (J4Degs <= -(J4NegAngLim - J4AngCur)):
-        ser.write("MJD"+J4motdir+str(J4jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
+    if (J4Degs <= -(joint.J4NegAngLim - joint.J4AngCur)):
+        ser.write("MJD"+mot.J4motdir+str(J4jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        J4StepCur = J4StepCur - int(J4jogSteps)
-        J4AngCur = round(J4NegAngLim + (J4StepCur * J4DegPerStep),2)
+        joint.J4StepCur = joint.J4StepCur - int(J4jogSteps)
+        joint.J4AngCur = round(joint.J4NegAngLim + (joint.J4StepCur * joint.J4DegPerStep),2)
         J4curAngEntryField.delete(0, 'end')
-        J4curAngEntryField.insert(0,str(J4AngCur))
+        J4curAngEntryField.insert(0,str(joint.J4AngCur))
+        
         savePosData()
         CalcFwdKin()
     else:
@@ -1778,9 +1725,6 @@ def J4jogNeg():
 
 
 def J4jogPos():
-    global JogStepsStat
-    global J4StepCur
-    global J4AngCur
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     Speed = speedEntryField.get()
     ACCdur = ACCdurField.get()
@@ -1788,28 +1732,30 @@ def J4jogPos():
     DECdur = DECdurField.get()
     DECspd = DECspeedField.get()
     J4Degs = float(J4jogDegsEntryField.get())
-    if JogStepsStat.get() == 0:
-        J4jogSteps = int(J4Degs/J4DegPerStep)
+    
+    if joint.JogStepsStat.get() == 0:
+        J4jogSteps = int(J4Degs / joint.J4DegPerStep)
     else:
         #switch from degs to steps
         J4jogSteps = J4Degs
-        J4Degs = J4Degs*J4DegPerStep
+        J4Degs = J4Degs * joint.J4DegPerStep
 
     #calc pos dir output
-    if (J4motdir == "0"):
+    if (mot.J4motdir == "0"):
         J4drivedir = "1"
     else:
         J4drivedir = "0"
 
-    if (J4Degs <= (J4PosAngLim - J4AngCur)):
+    if (J4Degs <= (joint.J4PosAngLim - joint.J4AngCur)):
         ser.write("MJD"+J4drivedir+str(J4jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        J4StepCur = J4StepCur + int(J4jogSteps)
-        J4AngCur = round(J4NegAngLim + (J4StepCur * J4DegPerStep),2)
+        joint.J4StepCur = joint.J4StepCur + int(J4jogSteps)
+        joint.J4AngCur = round(joint.J4NegAngLim + (joint.J4StepCur * joint.J4DegPerStep),2)
         J4curAngEntryField.delete(0, 'end')
-        J4curAngEntryField.insert(0,str(J4AngCur))
+        J4curAngEntryField.insert(0,str(joint.J4AngCur))
+        
         savePosData()
         CalcFwdKin()
     else:
@@ -1819,9 +1765,6 @@ def J4jogPos():
 
 
 def J5jogNeg():
-    global JogStepsStat
-    global J5StepCur
-    global J5AngCur
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     Speed = speedEntryField.get()
     ACCdur = ACCdurField.get()
@@ -1830,22 +1773,23 @@ def J5jogNeg():
     DECspd = DECspeedField.get()
     J5Degs = float(J5jogDegsEntryField.get())
 
-    if JogStepsStat.get() == 0:
-        J5jogSteps = int(J5Degs/J5DegPerStep)
+    if joint.JogStepsStat.get() == 0:
+        J5jogSteps = int(J5Degs / joint.J5DegPerStep)
     else:
         #switch from degs to steps
         J5jogSteps = J5Degs
-        J5Degs = J5Degs*J5DegPerStep
+        J5Degs = J5Degs * joint.J5DegPerStep
 
-    if (J5Degs <= -(J5NegAngLim - J5AngCur)):
-        ser.write("MJE"+J5motdir+str(J5jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
+    if (J5Degs <= -(joint.J5NegAngLim - joint.J5AngCur)):
+        ser.write("MJE"+mot.J5motdir+str(J5jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        J5StepCur = J5StepCur - int(J5jogSteps)
-        J5AngCur = round(J5NegAngLim + (J5StepCur * J5DegPerStep),2)
+        joint.J5StepCur = joint.J5StepCur - int(J5jogSteps)
+        joint.J5AngCur = round(joint.J5NegAngLim + (joint.J5StepCur * joint.J5DegPerStep),2)
         J5curAngEntryField.delete(0, 'end')
-        J5curAngEntryField.insert(0,str(J5AngCur))
+        J5curAngEntryField.insert(0,str(joint.J5AngCur))
+        
         savePosData()
         CalcFwdKin()
     else:
@@ -1855,9 +1799,6 @@ def J5jogNeg():
 
 
 def J5jogPos():
-    global JogStepsStat
-    global J5StepCur
-    global J5AngCur
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     Speed = speedEntryField.get()
     ACCdur = ACCdurField.get()
@@ -1866,28 +1807,29 @@ def J5jogPos():
     DECspd = DECspeedField.get()
     J5Degs = float(J5jogDegsEntryField.get())
 
-    if JogStepsStat.get() == 0:
-        J5jogSteps = int(J5Degs/J5DegPerStep)
+    if joint.JogStepsStat.get() == 0:
+        J5jogSteps = int(J5Degs / joint.J5DegPerStep)
     else:
         #switch from degs to steps
         J5jogSteps = J5Degs
-        J5Degs = J5Degs*J5DegPerStep
+        J5Degs = J5Degs * joint.J5DegPerStep
 
     #calc pos dir output
-    if (J5motdir == "0"):
+    if (mot.J5motdir == "0"):
         J5drivedir = "1"
     else:
         J5drivedir = "0"
 
-    if (J5Degs <= (J5PosAngLim - J5AngCur)):
+    if (J5Degs <= (joint.J5PosAngLim - joint.J5AngCur)):
         ser.write("MJE"+J5drivedir+str(J5jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        J5StepCur = J5StepCur + int(J5jogSteps)
-        J5AngCur = round(J5NegAngLim + (J5StepCur * J5DegPerStep),2)
+        joint.J5StepCur = joint.J5StepCur + int(J5jogSteps)
+        joint.J5AngCur = round(joint.J5NegAngLim + (joint.J5StepCur * joint.J5DegPerStep),2)
         J5curAngEntryField.delete(0, 'end')
-        J5curAngEntryField.insert(0,str(J5AngCur))
+        J5curAngEntryField.insert(0,str(joint.J5AngCur))
+        
         savePosData()
         CalcFwdKin()
     else:
@@ -1897,9 +1839,6 @@ def J5jogPos():
 
 
 def J6jogNeg():
-    global JogStepsStat
-    global J6StepCur
-    global J6AngCur
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     Speed = speedEntryField.get()
     ACCdur = ACCdurField.get()
@@ -1908,22 +1847,23 @@ def J6jogNeg():
     DECspd = DECspeedField.get()
     J6Degs = float(J6jogDegsEntryField.get())
 
-    if JogStepsStat.get() == 0:
-        J6jogSteps = int(J6Degs/J6DegPerStep)
+    if joint.JogStepsStat.get() == 0:
+        J6jogSteps = int(J6Degs / joint.J6DegPerStep)
     else:
         #switch from degs to steps
         J6jogSteps = J6Degs
-        J6Degs = J6Degs*J6DegPerStep
+        J6Degs = J6Degs * joint.J6DegPerStep
 
     if (J6Degs <= -(J6NegAngLim - J6AngCur)):
-        ser.write("MJF"+J6motdir+str(J6jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
+        ser.write("MJF"+mot.J6motdir+str(J6jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        J6StepCur = J6StepCur - int(J6jogSteps)
-        J6AngCur = round(J6NegAngLim + (J6StepCur * J6DegPerStep),2)
+        joint.J6StepCur = joint.J6StepCur - int(J6jogSteps)
+        joint.J6AngCur = round(joint.J6NegAngLim + (joint.J6StepCur * joint.J6DegPerStep),2)
         J6curAngEntryField.delete(0, 'end')
-        J6curAngEntryField.insert(0,str(J6AngCur))
+        J6curAngEntryField.insert(0,str(joint.J6AngCur))
+        
         savePosData()
         CalcFwdKin()
     else:
@@ -1933,9 +1873,6 @@ def J6jogNeg():
 
 
 def J6jogPos():
-    global JogStepsStat
-    global J6StepCur
-    global J6AngCur
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     Speed = speedEntryField.get()
     ACCdur = ACCdurField.get()
@@ -1944,28 +1881,29 @@ def J6jogPos():
     DECspd = DECspeedField.get()
     J6Degs = float(J6jogDegsEntryField.get())
 
-    if JogStepsStat.get() == 0:
-        J6jogSteps = int(J6Degs/J6DegPerStep)
+    if joint.JogStepsStat.get() == 0:
+        J6jogSteps = int(J6Degs / joint.J6DegPerStep)
     else:
         #switch from degs to steps
         J6jogSteps = J6Degs
-        J6Degs = J6Degs*J6DegPerStep
+        J6Degs = J6Degs * joint.J6DegPerStep
 
     #calc pos dir output
-    if (J6motdir == "0"):
+    if (mot.J6motdir == "0"):
         J6drivedir = "1"
     else:
         J6drivedir = "0"
 
-    if (J6Degs <= (J6PosAngLim - J6AngCur)):
+    if (J6Degs <= (joint.J6PosAngLim - joint.J6AngCur)):
         ser.write("MJF"+J6drivedir+str(J6jogSteps)+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        J6StepCur = J6StepCur + int(J6jogSteps)
-        J6AngCur = round(J6NegAngLim + (J6StepCur * J6DegPerStep),2)
+        joint.J6StepCur = joint.J6StepCur + int(J6jogSteps)
+        joint.J6AngCur = round(joint.J6NegAngLim + (joint.J6StepCur * joint.J6DegPerStep),2)
         J6curAngEntryField.delete(0, 'end')
-        J6curAngEntryField.insert(0,str(J6AngCur))
+        J6curAngEntryField.insert(0,str(joint.J6AngCur))
+        
         savePosData()
         CalcFwdKin()
     else:
@@ -1976,56 +1914,23 @@ def J6jogPos():
 
 def XjogNeg():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos - float(XjogEntryField.get())
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
-    TCX = 0
-    TCY = 0
-    TCZ = 0
-    TCRx = 0
-    TCRy = 0
-    TCRz = 0
-    Track = float(TrackcurEntryField.get())
-    newSpeed = speedEntryField.get()
-    ACCdur = ACCdurField.get()
-    ACCspd = ACCspeedField.get()
-    DECdur = DECdurField.get()
-    DECspd = DECspeedField.get()
-    MoveXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track)
+    
+    jog.CX = joint.XcurPos - float(XjogEntryField.get())
+    MoveXYZ()
 
 def YjogNeg():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos - float(YjogEntryField.get())
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
-    TCX = 0
-    TCY = 0
-    TCZ = 0
-    TCRx = 0
-    TCRy = 0
-    TCRz = 0
-    Track = float(TrackcurEntryField.get())
-    newSpeed = speedEntryField.get()
-    ACCdur = ACCdurField.get()
-    ACCspd = ACCspeedField.get()
-    DECdur = DECdurField.get()
-    DECspd = DECspeedField.get()
-    MoveXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track)
+    
+    jog.CY = joint.YcurPos - float(YjogEntryField.get())
+    MoveXYZ()
 
 def ZjogNeg():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos - float(ZjogEntryField.get())
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    
+    jog.CZ = joint.ZcurPos - float(ZjogEntryField.get())
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2042,12 +1947,12 @@ def ZjogNeg():
 
 def RxjogNeg():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos - float(RxjogEntryField.get())
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos - float(RxjogEntryField.get())
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2064,12 +1969,12 @@ def RxjogNeg():
 
 def RyjogNeg():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos - float(RyjogEntryField.get())
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos - float(RyjogEntryField.get())
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2086,12 +1991,12 @@ def RyjogNeg():
 
 def RzjogNeg():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos - float(RzjogEntryField.get())
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos - float(RzjogEntryField.get())
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2108,12 +2013,12 @@ def RzjogNeg():
 
 def XjogPos():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos + float(XjogEntryField.get())
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos + float(XjogEntryField.get())
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2130,12 +2035,12 @@ def XjogPos():
 
 def YjogPos():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos + float(YjogEntryField.get())
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos + float(YjogEntryField.get())
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2152,12 +2057,12 @@ def YjogPos():
 
 def ZjogPos():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos + float(ZjogEntryField.get())
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos + float(ZjogEntryField.get())
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2174,12 +2079,12 @@ def ZjogPos():
 
 def RxjogPos():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos + float(RxjogEntryField.get())
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos + float(RxjogEntryField.get())
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2196,12 +2101,12 @@ def RxjogPos():
 
 def RyjogPos():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos + float(RyjogEntryField.get())
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos + float(RyjogEntryField.get())
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2218,12 +2123,12 @@ def RyjogPos():
 
 def RzjogPos():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos + float(RzjogEntryField.get())
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos + float(RzjogEntryField.get())
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2239,9 +2144,6 @@ def RzjogPos():
     MoveXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track)
 
 def TrackjogNeg():
-    global TrackcurPos
-    global TrackLength
-    global TrackStepLim
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     CT = float(TrackjogEntryField.get())
     Speed = speedEntryField.get()
@@ -2250,27 +2152,25 @@ def TrackjogNeg():
     DECdur = DECdurField.get()
     DECspd = DECspeedField.get()
 
-    if JogStepsStat.get() == 1:
+    if joint.JogStepsStat.get() == 1:
         TrackSteps = TrackjogEntryField.get()
     else:
-        TrackSteps = str(int((TrackStepLim/TrackLength)*CT))
+        TrackSteps = str(int((joint.TrackStepLim / joint.TrackLength) * CT))
 
-    if (TrackcurPos - (float(TrackSteps) * (TrackLength/TrackStepLim)) >= 0):
+    if (joint.TrackcurPos - (float(TrackSteps) * (joint.TrackLength / joint.TrackStepLim)) >= 0):
         ser.write("MJT0"+TrackSteps+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        TrackcurPos = TrackcurPos - (float(TrackSteps) * (TrackLength/TrackStepLim))
+        joint.TrackcurPos = joint.TrackcurPos - (float(TrackSteps) * (joint.TrackLength / joint.TrackStepLim))
         TrackcurEntryField.delete(0, 'end')
-        TrackcurEntryField.insert(0,str(TrackcurPos))
+        TrackcurEntryField.insert(0,str(joint.TrackcurPos))
+        
         savePosData()
     else:
         almStatusLab.config(text="TRACK NEG TRAVEL LIMIT", bg = "red")
 
 def TrackjogPos():
-    global TrackcurPos
-    global TrackLength
-    global TrackStepLim
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
     CT = float(TrackjogEntryField.get())
     Speed = speedEntryField.get()
@@ -2279,38 +2179,39 @@ def TrackjogPos():
     DECdur = DECdurField.get()
     DECspd = DECspeedField.get()
 
-    if JogStepsStat.get() == 1:
+    if joint.JogStepsStat.get() == 1:
         TrackSteps = TrackjogEntryField.get()
     else:
-        TrackSteps = str(int((TrackStepLim/TrackLength)*CT))
+        TrackSteps = str(int((joint.TrackStepLim / joint.TrackLength) * CT))
 
-    if (TrackcurPos + (float(TrackSteps) * (TrackLength/TrackStepLim)) <= TrackLength):
+    if (joint.TrackcurPos + (float(TrackSteps) * (joint.TrackLength / joint.TrackStepLim)) <= joint.TrackLength):
         ser.write("MJT1"+TrackSteps+"S"+Speed+"G"+ACCdur+"H"+ACCspd+"I"+DECdur+"K"+DECspd+"\n")
         ser.flushInput()
         time.sleep(.2)
         ser.read()
-        TrackcurPos = TrackcurPos + (float(TrackSteps) * (TrackLength/TrackStepLim))
+        joint.TrackcurPos = joint.TrackcurPos + (float(TrackSteps) * (joint.TrackLength / joint.TrackStepLim))
         TrackcurEntryField.delete(0, 'end')
-        TrackcurEntryField.insert(0,str(TrackcurPos))
+        TrackcurEntryField.insert(0,str(joint.TrackcurPos))
+        
         savePosData()
     else:
         almStatusLab.config(text="TRACK POS TRAVEL LIMIT", bg = "red")
 
 def CalTrackPos():
-    global TrackcurPos
-    TrackcurPos = 0
+    joint.TrackcurPos = 0
     TrackcurEntryField.delete(0, 'end')
-    TrackcurEntryField.insert(0,str(TrackcurPos))
+    TrackcurEntryField.insert(0,str(joint.TrackcurPos))
+    
     savePosData()
 
 def TXjogNeg():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0 - float(TXjogEntryField.get())
     TCY = 0
     TCZ = 0
@@ -2327,12 +2228,12 @@ def TXjogNeg():
 
 def TYjogNeg():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0 - float(TYjogEntryField.get())
     TCZ = 0
@@ -2349,12 +2250,12 @@ def TYjogNeg():
 
 def TZjogNeg():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0 - float(TZjogEntryField.get())
@@ -2371,12 +2272,12 @@ def TZjogNeg():
 
 def TRxjogNeg():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2391,14 +2292,15 @@ def TRxjogNeg():
     DECspd = DECspeedField.get()
     MoveXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track)
 
+
 def TRyjogNeg():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2415,12 +2317,12 @@ def TRyjogNeg():
 
 def TRzjogNeg():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2437,12 +2339,12 @@ def TRzjogNeg():
 
 def TXjogPos():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0 + float(TXjogEntryField.get())
     TCY = 0
     TCZ = 0
@@ -2459,12 +2361,12 @@ def TXjogPos():
 
 def TYjogPos():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0 + float(TYjogEntryField.get())
     TCZ = 0
@@ -2481,12 +2383,12 @@ def TYjogPos():
 
 def TZjogPos():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0 + float(TZjogEntryField.get())
@@ -2503,12 +2405,12 @@ def TZjogPos():
 
 def TRxjogPos():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2525,12 +2427,12 @@ def TRxjogPos():
 
 def TRyjogPos():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2547,12 +2449,12 @@ def TRyjogPos():
 
 def TRzjogPos():
     almStatusLab.config(text="SYSTEM READY", bg = "grey")
-    CX = XcurPos
-    CY = YcurPos
-    CZ = ZcurPos
-    CRx = RxcurPos
-    CRy = RycurPos
-    CRz = RzcurPos
+    CX = joint.XcurPos
+    CY = joint.YcurPos
+    CZ = joint.ZcurPos
+    CRx = joint.RxcurPos
+    CRy = joint.RycurPos
+    CRz = joint.RzcurPos
     TCX = 0
     TCY = 0
     TCZ = 0
@@ -2568,15 +2470,6 @@ def TRzjogPos():
     MoveXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track)
 
 def teachInsertBelSelected():
-    global XcurPos
-    global YcurPos
-    global ZcurPos
-    global RxcurPos
-    global RycurPos
-    global RzcurPos
-    global WC
-    global TrackcurPos
-
     try:
         selRow = tab1.progView.curselection()[0]
         selRow += 1
@@ -2588,13 +2481,13 @@ def teachInsertBelSelected():
     ACCspd = ACCspeedField.get()
     DECdur = DECdurField.get()
     DECspd = DECspeedField.get()
-    J1AngWrite = str(round(XcurPos,3))
-    J2AngWrite = str(round(YcurPos,3))
-    J3AngWrite = str(round(ZcurPos,3))
-    J4AngWrite = str(round(RxcurPos,3))
-    J5AngWrite = str(round(RycurPos,3))
-    J6AngWrite = str(round(RzcurPos,3))
-    TrackPosWrite = str(round(TrackcurPos,3))
+    J1AngWrite = str(round(joint.XcurPos,3))
+    J2AngWrite = str(round(joint.YcurPos,3))
+    J3AngWrite = str(round(joint.ZcurPos,3))
+    J4AngWrite = str(round(joint.RxcurPos,3))
+    J5AngWrite = str(round(joint.RycurPos,3))
+    J6AngWrite = str(round(joint.RzcurPos,3))
+    TrackPosWrite = str(round(joint.TrackcurPos,3))
     movetype = options.get()
 
     if(movetype == "OFFS J"):
@@ -3532,53 +3425,47 @@ def CalcFwdKin():
 
 
 def MoveXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track):
-    CalcRevKin(CX,CY,CZ,CRx,CRy,CRz,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz)
+    CalcRevKin()
     MoveNew(J1out,J2out,J3out,J4out,J5out,J6out,newSpeed,ACCdur,ACCspd,DECdur,DECspd,Track)
 
 def CalXYZ(CX,CY,CZ,CRx,CRy,CRz,newSpeed,ACCdur,ACCspd,DECdur,DECspd,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz,Track):
-    CalcRevKin(CX,CY,CZ,CRx,CRy,CRz,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz)
+    CalcRevKin()
     CalNew(J1out,J2out,J3out,J4out,J5out,J6out,newSpeed,ACCdur,ACCspd,DECdur,DECspd,Track)
 
-def CalcRevKin(CX,CY,CZ,CRx,CRy,CRz,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz):
+def CalcRevKin():
     global J1out
     global J2out
     global J3out
     global J4out
     global J5out
     global J6out
-    global J1AngCur
-    global J2AngCur
-    global J3AngCur
-    global J4AngCur
-    global J5AngCur
-    global J6AngCur
 
-    if (J1AngCur == 0):
-        J1AngCur = .0001
+    if (joint.J1AngCur == 0):
+        joint.J1AngCur = .0001
 
-    if (J2AngCur == 0):
-        J2AngCur = .0001
+    if (joint.J2AngCur == 0):
+        joint.J2AngCur = .0001
 
-    if (J3AngCur == 0):
-        J3AngCur = .0001
+    if (joint.J3AngCur == 0):
+        joint.J3AngCur = .0001
 
-    if (J4AngCur == 0):
-        J4AngCur = .0001
+    if (joint.J4AngCur == 0):
+        joint.J4AngCur = .0001
 
-    if (J5AngCur == 0):
-        J5AngCur = .0001
+    if (joint.J5AngCur == 0):
+        joint.J5AngCur = .0001
 
-    if (J6AngCur == 0):
-        J6AngCur = .0001
+    if (joint.J6AngCur == 0):
+        joint.J6AngCur = .0001
 
     #input
-    O4 = CX
-    O5 = CY
-    O6 = CZ
-    O9 = CRx
-    O8 = CRy
-    O7 = CRz
-    V8 = WC
+    O4 = jog.CX
+    O5 = jog.CY
+    O6 = jog.CZ
+    O9 = jog.CRx
+    O8 = jog.CRy
+    O7 = jog.CRz
+    V8 = jog.WC
 
     if (O4 == 0):
         O4 = .0001
@@ -3609,24 +3496,24 @@ def CalcRevKin(CX,CY,CZ,CRx,CRy,CRz,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz):
         V9 = 4
 
     ## DH TABLE
-    D13 = math.radians(DHr1)
-    D14 = math.radians(DHr2)
-    D15 = math.radians(DHr3)
-    D16 = math.radians(DHr4)
-    D17 = math.radians(DHr5)
-    D18 = math.radians(DHr6)
-    E13 = DHd1
-    E14 = DHd2
-    E15 = DHd3
-    E16 = DHd4
-    E17 = DHd5
-    E18 = DHd6
-    F13 = DHa1
-    F14 = DHa2
-    F15 = DHa3
-    F16 = DHa4
-    F17 = DHa5
-    F18 = DHa6
+    D13 = math.radians(dh.DHr1)
+    D14 = math.radians(dh.DHr2)
+    D15 = math.radians(dh.DHr3)
+    D16 = math.radians(dh.DHr4)
+    D17 = math.radians(dh.DHr5)
+    D18 = math.radians(dh.DHr6)
+    E13 = dh.DHd1
+    E14 = dh.DHd2
+    E15 = dh.DHd3
+    E16 = dh.DHd4
+    E17 = dh.DHd5
+    E18 = dh.DHd6
+    F13 = dh.DHa1
+    F14 = dh.DHa2
+    F15 = dh.DHa3
+    F16 = dh.DHa4
+    F17 = dh.DHa5
+    F18 = dh.DHa6
 
     ## WORK FRAME INPUT
     H13 = -float(UFxEntryField.get())
@@ -3637,12 +3524,12 @@ def CalcRevKin(CX,CY,CZ,CRx,CRy,CRz,WC,TCX,TCY,TCZ,TCRx,TCRy,TCRz):
     H18 = -float(UFrzEntryField.get())
 
     ## TOOL FRAME INPUT
-    J13 = -float(TFxEntryField.get()) + TCX
-    J14 = -float(TFyEntryField.get()) + TCY
-    J15 = -float(TFzEntryField.get()) + TCZ
-    J16 = -float(TFrxEntryField.get()) + TCRx
-    J17 = -float(TFryEntryField.get()) + TCRy
-    J18 = -float(TFrzEntryField.get()) + TCRz
+    J13 = -float(TFxEntryField.get()) + jog.TCX
+    J14 = -float(TFyEntryField.get()) + jog.TCY
+    J15 = -float(TFzEntryField.get()) + jog.TCZ
+    J16 = -float(TFrxEntryField.get()) + jog.TCRx
+    J17 = -float(TFryEntryField.get()) + jog.TCRy
+    J18 = -float(TFrzEntryField.get()) + jog.TCRz
 
     ## WORK FRAME TABLE
     N30 = math.cos(math.radians(H18))*math.cos(math.radians(H17))
