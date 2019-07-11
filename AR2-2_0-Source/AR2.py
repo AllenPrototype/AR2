@@ -134,7 +134,7 @@ class Communication:
         elif device.devPlf == "Windows":
             self.comName = "COM"
 
-        self.port = comName + comPortEntryField.get()
+        self.port = self.comName + comPortEntryField.get()
 
     def setSerial(self):
         self.ser = serial.Serial(self.port, self.baud, timeout = 1)
